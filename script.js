@@ -1,7 +1,7 @@
 const canvas = document.querySelector("canvas");
 
 let img = new Image();
-img.src = "running-sprite1.png"
+img.src = "sm-walking.png"
 
 canvas.style.backgroundColor= "black";
 canvas.width = 600;
@@ -9,8 +9,8 @@ canvas.height = 600;
 let ctx = canvas.getContext("2d");
 
 img.addEventListener("load", (event) => {
-    spriteH = img.height / 2;
-    spriteW = img.width / 5;
+    spriteH = img.height;
+    spriteW = img.width / 8;
 
     //ctx.drawImage(img, 0, 0, spriteW, spriteH, 0, 50, spriteW, spriteH);
 
@@ -20,9 +20,9 @@ img.addEventListener("load", (event) => {
 })
 
 
-let numImgs = 5;
+let numImgs = 8;
 let currentImgIndx = 0;
-let frames = 0;
+let frames = 8;
 let playerX = 10;
 let playerY = 200;
 
@@ -32,9 +32,9 @@ let draw = () => {
     // clear the canvas (maybe not the whole thing depending on game)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (frames %  5 == 0){
+    if (frames %  8 == 0){
         // calculate and update vars
-        currentImgIndx = (currentImgIndx == 4) ? 0 : currentImgIndx += 1;
+        currentImgIndx = (currentImgIndx == 7) ? 0 : currentImgIndx += 1;
     }
 
 
@@ -59,10 +59,14 @@ let draw = () => {
     //render2
     ctx.drawImage(img, spriteW, 0, spriteW, spriteH, playerX, playerY, spriteW, spriteH);
 
-
+    /*
+    // Draws circles onto page;
+     circle.forEach((circle) => {
+         //console.log(circle);
+         drawCircle(circle.x, circle.y, radius, 5, circle.colour, circle.colour);
+     });
+     */
     window.requestAnimationFrame(draw);
-
-    
 }
 
 document.addEventListener("keydown", keyDownHandler, false);
@@ -105,6 +109,46 @@ function keyUpHandler(event) {
     }
 }
 
+// Adding objects to be enemies and health points
+
+let circle = [];
+let radius = 25;
+let xCirc = 10;
+let yCirc = 20;
 
 
+function drawCircle(xCirc, yCirc, radius, border, borderColor, fillColor){
+    console.log("we made it inton the Drawcircle")
+    ctx.beginPath();
+    ctx.arc(xCirc, yCirc, radius, 0, 2*Math.PI);
+    ctx.strokeStyle = borderColor;
+    ctx.fillStyle = fillColor;
+    ctx.lineWidth = border;
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+}
 
+for (let i = 0; i < 20; i++) {
+    let xC = radius + (Math.random() * (canvas.width - (2 * radius)));
+    let yC = radius + (Math.random() * (canvas.height - (2 * radius)));
+    let colour = randomColour();
+    let direction = Math.random() * 2.0 * Math.PI;
+    circle.push({xC: xC, yC: yC, colour: colour, direction: direction});
+    //draw()
+}
+
+function randomColour() {
+    let chars = '0123456789ABCDEF';
+    let colour = '#';
+    for (let i = 0; i < 6; i++){
+        colour += chars[Math.floor(Math.random() * 16)];
+    }
+
+    return colour;
+}
+
+circle.forEach((circle) => {
+    console.log(circle);
+    drawCircle(circle.x, circle.y, radius, 5, circle.colour, circle.colour);
+});
