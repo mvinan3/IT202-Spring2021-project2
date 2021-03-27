@@ -3,7 +3,7 @@ const backgroundMusic = document.createElement("audio");
 backgroundMusic.src = "backgroundMusic.mp3";
 
 const img = new Image();
-img.src = "sm-walking.png"
+img.src = "character.png"
 
 const enemieImg = new Image();
 enemieImg.src = "enemiesWhite.png";
@@ -219,7 +219,7 @@ function drawMenu() {
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      navigator.serviceWorker.register('sw.js').then(function(registration) {
         // Registration was successful
         console.log('ServiceWorker registration successful with scope: ', registration.scope);
       }, function(err) {
