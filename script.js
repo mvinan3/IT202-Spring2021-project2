@@ -1,19 +1,28 @@
 const canvas = document.querySelector("canvas");
+const backgroundMusic = document.createElement("audio");
+backgroundMusic.src = "backgroundMusic.mp3";
 
 const img = new Image();
 img.src = "sm-walking.png"
 
-
+const enemieImg = new Image();
+enemieImg.src = "enemiesWhite.png";
 
 
 //canvas.style.backgroundColor = "black";
 canvas.width = 600;
 canvas.height = 600;
 let ctx = canvas.getContext("2d");
+drawMenu();
+
 
 img.addEventListener("load", (event) => {
     spriteH = img.height;
     spriteW = img.width / 8;
+    
+
+    enemieH = 48;
+    enemieW = 48;
 
     const layer6 = new Image();
     layer6.src = "layer_06.png";
@@ -68,19 +77,27 @@ img.addEventListener("load", (event) => {
         foreGroundSprite2
     ]
 
-    draw();
+    document.addEventListener("keypress", (event) => {
+        if (event.keyCode == 13) {
+            draw();
+            backgroundMusic.play();
+        }
+    });
 })
 
 
 let numImgs = 8;
 let currentImgIndx = 0;
-let frames = 8;
+let frames = 0;
 let playerX = 10;
 let playerY = 400;
+let eFrames = 0;
+let eImgIndex = 0;
 
 let draw = () => {
+    
     frames += 1;
-    //x += 1;
+    eFrames += 1;
     // clear the canvas (maybe not the whole thing depending on game)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -89,22 +106,25 @@ let draw = () => {
         currentImgIndx = (currentImgIndx == 7) ? 0 : currentImgIndx += 1;
     }
 
+    if (eFrames % 6 == 0) {
+        eImgIndex = (eImgIndex == 2) ? 0 : eImgIndex += 1;
+        //ctx.drawImage(enemieImg, enemieW * eFrames, enemieH, enemieW, enemieH, 300, 300, spriteW, spriteH);
+
+    }
 
     // moves player according to what keys are pressed
     if (rightPressed) {
-        playerX += 5;
+        playerX += 1;
     }
     else if (leftPressed) {
-        playerX -= 5;
+        playerX -= 1;
     }
     else if (downPressed) {
-        playerY += 5;
+        playerY += 1;
     }
     else if (upPressed) {
-        playerY -= 5;
+        playerY -= 1;
     }
-
-
 
     // does scrolling background
     spriteArray.forEach((sprite) => {
@@ -112,17 +132,12 @@ let draw = () => {
         sprite.draw(ctx);
     });
 
-    /*
-    // render circles 
-    circles.forEach((circle) => {
-        circle.x = circle.x + Math.cos(circle.direction);
-        circle.y = circle.y + Math.sin(circle.direction);
-        drawCircle(circle.x, circle.y, radius, 5, circle.colour, circle.colour);
-        bounce(circle);
-    }); */
-
     ctx.drawImage(img, spriteW * currentImgIndx, 0, spriteW, spriteH, playerX, playerY, spriteW, spriteH);
     window.requestAnimationFrame(draw);
+
+    ctx.drawImage(enemieImg, enemieW * eImgIndex, 0, enemieW, enemieH, 300, 400, spriteW, spriteH);
+
+    
 }
 
 document.addEventListener("keydown", keyDownHandler, false);
@@ -165,52 +180,6 @@ function keyUpHandler(event) {
     }
 }
 
-// Adding objects to be enemies and health points
-
-let circles = [];
-let radius = 25;
-let xCirc = 10;
-let yCirc = 20;
-
-
-function drawCircle(xCirc, yCirc, radius, border, borderColor, fillColor) {
-    ctx.beginPath();
-    ctx.arc(xCirc, yCirc, radius, 0, 2 * Math.PI);
-    ctx.strokeStyle = borderColor;
-    ctx.fillStyle = fillColor;
-    ctx.lineWidth = border;
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-}
-
-for (let i = 0; i < 15; i++) {
-    let xC = radius + (Math.random() * (canvas.width - (2 * radius)));
-    let yC = radius + (Math.random() * (canvas.height - (2 * radius)));
-    let colour = randomColour();
-    let direction = Math.random() * 2.0 * Math.PI;
-    circles.push({ x: xC, y: yC, colour: colour, direction: direction });
-}
-
-function randomColour() {
-    let chars = '0123456789ABCDEF';
-    let colour = '#';
-    for (let i = 0; i < 6; i++) {
-        colour += chars[Math.floor(Math.random() * 16)];
-    }
-
-    return colour;
-}
-
-function bounce(circle) {
-    if (((circle.x - radius) < 0) || ((circle.y - radius) < 0) || ((circle.x + radius) > canvas.width) || ((circle.y + radius) > canvas.height)) {
-        circle.direction += (Math.PI / 2);
-    }
-    if (circle.direction > (2 * Math.PI)) {
-        circle.direction -= (2 * Math.PI);
-    }
-}
-
 // class for scrolling sprite
 class ScrollingSprite {
     constructor(image, x, y, width, height, speed) {
@@ -233,3 +202,29 @@ class ScrollingSprite {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
 }
+
+function drawMenu() {
+    ctx.font = "50px Consolas";
+    ctx.fillStyle = "purple";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "black";
+    ctx.fillText("Some Chicken Game",125,100); 
+    ctx.font = "30px Consolas";
+    ctx.fillText("The purpose of the game is to avoid", 125, 300);
+    ctx.fillText("the chickens from touching you,",125, 330);
+    ctx.fillText("you are given three lives.",125, 360);
+    ctx.fillText("Press Enter to start, Good luck!",125, 390);
+
+  }
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js').then(function(registration) {
+        // Registration was successful
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }, function(err) {
+        // registration failed :(
+        console.log('ServiceWorker registration failed: ', err);
+      });
+    });
+  }
