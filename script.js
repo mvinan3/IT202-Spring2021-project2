@@ -5,8 +5,34 @@ backgroundMusic.src = "backgroundMusic.mp3";
 const img = new Image();
 img.src = "character.png"
 
-const enemieImg = new Image();
-enemieImg.src = "enemiesWhite.png";
+const enemieImg1 = new Image();
+enemieImg1.src = "enemiesWhite.png";
+const enemieImg2 = new Image();
+enemieImg2.src = "enemiesGreen.png";
+const enemieImg3 = new Image();
+enemieImg3.src = "enemiesDarkgreen.png";
+const enemieImg4 = new Image();
+enemieImg4.src = "enemiesGray.png";
+const enemieImg5 = new Image();
+enemieImg5.src = "enemiesRedish.png";
+const enemieImg6 = new Image();
+enemieImg6.src = "enemiesRed.png";
+const enemieImg7 = new Image();
+enemieImg7.src = "enemiesDark.png";
+const enemieImg8 = new Image();
+enemieImg8.src = "enemiesBlack.png";
+
+enemiesArray = [
+    enemieImg1,
+    enemieImg2,
+    enemieImg3,
+    enemieImg4,
+    enemieImg5,
+    enemieImg6,
+    enemieImg7,
+    enemieImg8
+]
+
 
 
 //canvas.style.backgroundColor = "black";
@@ -19,7 +45,7 @@ drawMenu();
 img.addEventListener("load", (event) => {
     spriteH = img.height;
     spriteW = img.width / 8;
-    
+
 
     enemieH = 48;
     enemieW = 48;
@@ -91,11 +117,22 @@ let currentImgIndx = 0;
 let frames = 0;
 let playerX = 10;
 let playerY = 400;
+let score = 0;
+let lives = 3;
 let eFrames = 0;
 let eImgIndex = 0;
+let enemieX = 600;
+let enemieX2 = 1000;
+let enemieX3 = 1400;
+let enemieX4 = 1800;
+let enemieX5 = 2200;
+let enemieX6 = 2600;
+let enemieX7 = 3000;
+let enemieX8 = 3400;
+let gameSpeed = 1;
 
 let draw = () => {
-    
+
     frames += 1;
     eFrames += 1;
     // clear the canvas (maybe not the whole thing depending on game)
@@ -107,23 +144,38 @@ let draw = () => {
     }
 
     if (eFrames % 6 == 0) {
+        score++;
         eImgIndex = (eImgIndex == 2) ? 0 : eImgIndex += 1;
-        //ctx.drawImage(enemieImg, enemieW * eFrames, enemieH, enemieW, enemieH, 300, 300, spriteW, spriteH);
-
     }
 
     // moves player according to what keys are pressed
     if (rightPressed) {
-        playerX += 1;
+        playerX += 2;
+        if (playerX >= 525) {
+            playerX = 525;
+        }
     }
     else if (leftPressed) {
-        playerX -= 1;
+        playerX -= 2;
+        if (playerX <= 0) {
+            playerX = 5;
+        }
     }
     else if (downPressed) {
-        playerY += 1;
+        playerY += 10;
+        if (playerY >= 400) {
+            playerY = 400;
+        }
     }
     else if (upPressed) {
-        playerY -= 1;
+        playerY -= 20;
+
+        setTimeout(() => { playerY += 20; }, 200)
+
+        if (playerY >= 400) {
+            playerY = 400;
+        }
+
     }
 
     // does scrolling background
@@ -131,13 +183,24 @@ let draw = () => {
         sprite.scroll();
         sprite.draw(ctx);
     });
+    
 
     ctx.drawImage(img, spriteW * currentImgIndx, 0, spriteW, spriteH, playerX, playerY, spriteW, spriteH);
+    ctx.drawImage(enemieImg1, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX -= 2.5*gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg2, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX2 -=2.5*gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg3, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX3 -= 2.5*gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg4, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX4 -= 2.5*gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg5, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX5 -= 2.5*gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg6, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX6 -= 2.5*gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg7, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX7 -= 2.5*gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg8, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX8 -= 2.5*gameSpeed, 400, spriteW, spriteH);
+
     window.requestAnimationFrame(draw);
+    enemieLevel();
+    drawScore();
+    drawLives();
 
-    ctx.drawImage(enemieImg, enemieW * eImgIndex, 0, enemieW, enemieH, 300, 400, spriteW, spriteH);
 
-    
 }
 
 document.addEventListener("keydown", keyDownHandler, false);
@@ -159,7 +222,7 @@ function keyDownHandler(event) {
     if (event.keyCode == 40 || event.keyCode == 83) {
         downPressed = true;
     }
-    else if (event.keyCode == 38 || event.keyCode == 87) {
+    else if (event.keyCode == 32) {
         upPressed = true;
     }
 }
@@ -175,7 +238,7 @@ function keyUpHandler(event) {
     if (event.keyCode == 40 || event.keyCode == 83) {
         downPressed = false;
     }
-    else if (event.keyCode == 38 || event.keyCode == 87) {
+    else if (event.keyCode == 32) {
         upPressed = false;
     }
 }
@@ -203,28 +266,86 @@ class ScrollingSprite {
     }
 }
 
+// Draws the starting menu
 function drawMenu() {
     ctx.font = "50px Consolas";
     ctx.fillStyle = "purple";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "black";
-    ctx.fillText("Some Chicken Game",125,100); 
+    ctx.fillText("Some Chicken Game", 125, 100);
     ctx.font = "30px Consolas";
     ctx.fillText("The purpose of the game is to avoid", 125, 300);
-    ctx.fillText("the chickens from touching you,",125, 330);
-    ctx.fillText("you are given three lives.",125, 360);
-    ctx.fillText("Press Enter to start, Good luck!",125, 390);
+    ctx.fillText("the chickens from touching you,", 125, 330);
+    ctx.fillText("you are given three lives.", 125, 360);
+    ctx.fillText("Press Enter to start, Good luck!", 125, 390);
 
+}
+
+// Score counter
+function drawScore() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "red";
+    ctx.fillText("Score: " + score, 8, 20);
+}
+
+function enemieLevel(){
+    if (score < 40){
+        gameSpeed = 1;
+    }
+    else if (score >= 40){
+        gameSpeed = 2;
+    }
+    else if (score >= 80){
+        gameSpeed = 3;
+    }
+    else if(score >= 160){
+        gameSpeed = 4;
+    }
+}
+
+// Draws enemies
+function drawEnemies() {
+    enemieLevel();
+    let min = 0;
+    let max = 7;
+    let minX = 500;
+    let maxX = 700;
+    let random = getRandomInt(min, max);
+    let randomX = getRandomInt2(minX, maxX);
+    //ctx.drawImage(enemiesArray[random], enemieW * eImgIndex, 0, enemieW, enemieH, randomX *gameSpeed, 400, spriteW, spriteH);
+}
+
+// Collision detection
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
   }
 
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('sw.js').then(function(registration) {
-        // Registration was successful
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }, function(err) {
-        // registration failed :(
-        console.log('ServiceWorker registration failed: ', err);
-      });
+  function getRandomInt2(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+  }
+
+
+//lives Counter
+function drawLives() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "red";
+    ctx.fillText("Lives: " + lives, 8, 40);
+}
+
+// Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').then(function (registration) {
+            // Registration was successful
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function (err) {
+            // registration failed :(
+            console.log('ServiceWorker registration failed: ', err);
+        });
     });
-  }
+}
