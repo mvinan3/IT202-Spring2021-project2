@@ -1,6 +1,22 @@
 let CACHE_NAME = 'my-site-cache-v1';
 let urlsToCache = [
-  './index.html'
+  './index.html',
+  './character.png',
+  './enemiesBlack.png',
+  './enemiesDark.png',
+  './enemiesDarkgreen.png',
+  './enemiesGray.png',
+  './enemiesGreen.png',
+  './enemiesRed.png',
+  './enemiesRedish.png',
+  './enemiesWhite.png',
+  './layer_01.png',
+  './layer_02.png',
+  './layer_03.png',
+  './layer_04.png',
+  './layer_05.png',
+  './layer_06.png',
+  './backgroundMusic.mp3'
 ];
 
 

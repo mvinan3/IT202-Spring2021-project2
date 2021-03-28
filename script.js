@@ -22,18 +22,6 @@ enemieImg7.src = "enemiesDark.png";
 const enemieImg8 = new Image();
 enemieImg8.src = "enemiesBlack.png";
 
-enemiesArray = [
-    enemieImg1,
-    enemieImg2,
-    enemieImg3,
-    enemieImg4,
-    enemieImg5,
-    enemieImg6,
-    enemieImg7,
-    enemieImg8
-]
-
-
 
 //canvas.style.backgroundColor = "black";
 canvas.width = 600;
@@ -129,6 +117,15 @@ let enemieX5 = 2200;
 let enemieX6 = 2600;
 let enemieX7 = 3000;
 let enemieX8 = 3400;
+
+let enemieX_2 = 600 *2;
+let enemieX2_2 = 1000*2;
+let enemieX3_2 = 1400*2;
+let enemieX4_2 = 1800*2;
+let enemieX5_2 = 2200*2;
+let enemieX6_2 = 2600*2;
+let enemieX7_2 = 3000*2;
+let enemieX8_2 = 3400*2;
 let gameSpeed = 1;
 
 let draw = () => {
@@ -183,17 +180,27 @@ let draw = () => {
         sprite.scroll();
         sprite.draw(ctx);
     });
-    
+
 
     ctx.drawImage(img, spriteW * currentImgIndx, 0, spriteW, spriteH, playerX, playerY, spriteW, spriteH);
-    ctx.drawImage(enemieImg1, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX -= 2.5*gameSpeed, 400, spriteW, spriteH);
-    ctx.drawImage(enemieImg2, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX2 -=2.5*gameSpeed, 400, spriteW, spriteH);
-    ctx.drawImage(enemieImg3, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX3 -= 2.5*gameSpeed, 400, spriteW, spriteH);
-    ctx.drawImage(enemieImg4, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX4 -= 2.5*gameSpeed, 400, spriteW, spriteH);
-    ctx.drawImage(enemieImg5, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX5 -= 2.5*gameSpeed, 400, spriteW, spriteH);
-    ctx.drawImage(enemieImg6, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX6 -= 2.5*gameSpeed, 400, spriteW, spriteH);
-    ctx.drawImage(enemieImg7, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX7 -= 2.5*gameSpeed, 400, spriteW, spriteH);
-    ctx.drawImage(enemieImg8, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX8 -= 2.5*gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg1, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX -= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg2, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg3, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX3 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg4, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX4 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg5, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX5 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg6, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX6 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg7, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX7 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg8, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX8 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
+
+    ctx.drawImage(enemieImg4, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg1, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX2_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg3, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX3_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg2, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX4_2-= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg8, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX5_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg6, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX6_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg7, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX7_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg5, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX8_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    (loop);
 
     window.requestAnimationFrame(draw);
     enemieLevel();
@@ -277,7 +284,8 @@ function drawMenu() {
     ctx.fillText("The purpose of the game is to avoid", 125, 300);
     ctx.fillText("the chickens from touching you,", 125, 330);
     ctx.fillText("you are given three lives.", 125, 360);
-    ctx.fillText("Press Enter to start, Good luck!", 125, 390);
+    ctx.fillText("Use the spacebar to jump.", 125, 390);
+    ctx.fillText("Press Enter to start, Good luck!", 125, 420);
 
 }
 
@@ -288,31 +296,19 @@ function drawScore() {
     ctx.fillText("Score: " + score, 8, 20);
 }
 
-function enemieLevel(){
-    if (score < 40){
+function enemieLevel() {
+    if (score < 40) {
         gameSpeed = 1;
     }
-    else if (score >= 40){
+    else if (score >= 40) {
         gameSpeed = 2;
     }
-    else if (score >= 80){
+    else if (score >= 80) {
         gameSpeed = 3;
     }
-    else if(score >= 160){
+    else if (score >= 160) {
         gameSpeed = 4;
     }
-}
-
-// Draws enemies
-function drawEnemies() {
-    enemieLevel();
-    let min = 0;
-    let max = 7;
-    let minX = 500;
-    let maxX = 700;
-    let random = getRandomInt(min, max);
-    let randomX = getRandomInt2(minX, maxX);
-    //ctx.drawImage(enemiesArray[random], enemieW * eImgIndex, 0, enemieW, enemieH, randomX *gameSpeed, 400, spriteW, spriteH);
 }
 
 // Collision detection
@@ -321,13 +317,13 @@ function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-  }
+}
 
-  function getRandomInt2(min, max) {
+function getRandomInt2(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-  }
+}
 
 
 //lives Counter
@@ -349,3 +345,7 @@ if ('serviceWorker' in navigator) {
         });
     });
 }
+
+self.addEventListener('install', function (event) {
+    // Perform install steps
+});
