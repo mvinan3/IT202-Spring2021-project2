@@ -200,7 +200,6 @@ let draw = () => {
     ctx.drawImage(enemieImg6, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX6_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
     ctx.drawImage(enemieImg7, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX7_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
     ctx.drawImage(enemieImg5, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX8_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
-    (loop);
 
     window.requestAnimationFrame(draw);
     enemieLevel();
