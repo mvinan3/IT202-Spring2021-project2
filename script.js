@@ -91,15 +91,24 @@ img.addEventListener("load", (event) => {
         foreGroundSprite2
     ]
 
-    document.addEventListener("keypress", (event) => {
-        if (event.keyCode == 13) {
-            draw();
-            backgroundMusic.play();
-        }
+    document.addEventListener("click", (event) => {
+
+        draw();
+        backgroundMusic.play();
+
+        // gets motion info for device and sends it to a function
+        DeviceMotionEvent.requestPermission()
+            .then(response => {
+                if (response == 'granted') {
+                    window.addEventListener("deviceorientation", handleOrientation, true);
+                }
+            })
+            .catch(console.error)
     });
 })
 
 
+var gamma = 0;
 let numImgs = 8;
 let currentImgIndx = 0;
 let frames = 0;
@@ -118,15 +127,20 @@ let enemieX6 = 2600;
 let enemieX7 = 3000;
 let enemieX8 = 3400;
 
-let enemieX_2 = 600 *2;
-let enemieX2_2 = 1000*2;
-let enemieX3_2 = 1400*2;
-let enemieX4_2 = 1800*2;
-let enemieX5_2 = 2200*2;
-let enemieX6_2 = 2600*2;
-let enemieX7_2 = 3000*2;
-let enemieX8_2 = 3400*2;
+let enemieX_2 = 600 * 2;
+let enemieX2_2 = 1000 * 2;
+let enemieX3_2 = 1400 * 2;
+let enemieX4_2 = 1800 * 2;
+let enemieX5_2 = 2200 * 2;
+let enemieX6_2 = 2600 * 2;
+let enemieX7_2 = 3000 * 2;
+let enemieX8_2 = 3400 * 2;
 let gameSpeed = 1;
+
+// motion function
+function handleOrientation(event) {
+    gamma = event.gamma;
+}
 
 let draw = () => {
 
@@ -146,14 +160,14 @@ let draw = () => {
     }
 
     // moves player according to what keys are pressed
-    if (rightPressed) {
-        playerX += 2;
+    if (rightPressed || gamma > 20) {
+        playerX += 5;
         if (playerX >= 525) {
             playerX = 525;
         }
     }
-    else if (leftPressed) {
-        playerX -= 2;
+    else if (leftPressed || gamma < -20) {
+        playerX -= 5;
         if (playerX <= 0) {
             playerX = 5;
         }
@@ -195,7 +209,7 @@ let draw = () => {
     ctx.drawImage(enemieImg4, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
     ctx.drawImage(enemieImg1, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX2_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
     ctx.drawImage(enemieImg3, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX3_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
-    ctx.drawImage(enemieImg2, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX4_2-= 2.5 * gameSpeed, 400, spriteW, spriteH);
+    ctx.drawImage(enemieImg2, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX4_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
     ctx.drawImage(enemieImg8, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX5_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
     ctx.drawImage(enemieImg6, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX6_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
     ctx.drawImage(enemieImg7, enemieW * eImgIndex, 0, enemieW, enemieH, enemieX7_2 -= 2.5 * gameSpeed, 400, spriteW, spriteH);
@@ -275,23 +289,24 @@ class ScrollingSprite {
 // Draws the starting menu
 function drawMenu() {
     ctx.font = "50px Consolas";
-    ctx.fillStyle = "purple";
+    ctx.fillStyle = "#3399FF";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "black";
     ctx.fillText("Some Chicken Game", 125, 100);
     ctx.font = "30px Consolas";
-    ctx.fillText("The purpose of the game is to avoid", 125, 300);
-    ctx.fillText("the chickens from touching you,", 125, 330);
-    ctx.fillText("you are given three lives.", 125, 360);
-    ctx.fillText("Use the spacebar to jump.", 125, 390);
-    ctx.fillText("Press Enter to start, Good luck!", 125, 420);
+    ctx.fillText("The purpose of the game is to avoid", 125, 200);
+    ctx.fillText("the chickens from touching you,", 125, 230);
+    ctx.fillText("you are given three lives.", 125, 260);
+    ctx.fillText("Use arrow keys to move back and forth,", 125, 290);
+    ctx.fillText("if in mobile device, tilt to move.", 125, 320);
+    ctx.fillText("Click to begin, Good luck!", 125, 350);
 
 }
 
 // Score counter
 function drawScore() {
-    ctx.font = "16px Arial";
-    ctx.fillStyle = "red";
+    ctx.font = "18px Arial";
+    ctx.fillStyle = "black";
     ctx.fillText("Score: " + score, 8, 20);
 }
 
@@ -327,8 +342,8 @@ function getRandomInt2(min, max) {
 
 //lives Counter
 function drawLives() {
-    ctx.font = "16px Arial";
-    ctx.fillStyle = "red";
+    ctx.font = "18px Arial";
+    ctx.fillStyle = "black";
     ctx.fillText("Lives: " + lives, 8, 40);
 }
 
